@@ -3,4 +3,4 @@ self.addEventListener("install",e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith("courses-")&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
 self.addEventListener("fetch",e=>{const u=new URL(e.request.url);
   if(u.pathname.endsWith("data.json")){e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));return}
-  e.respondWith(fetch(e.request).then(r=>{const cp=r.clone();if(u.origin===location.origin)caches.open(C).then(c=>c.put(e.request,cp));return r}).catch(()=>caches.match(e.request)))});
+  e.respondWith(fetch(e.request).then(r=>{const cp=r.clone();if(u.origin===location.origin)caches.open(C).then(c=>c.put(e.request,cp));return r}).catch(()=>caches.match(e.request,{ignoreSearch:true})))});
